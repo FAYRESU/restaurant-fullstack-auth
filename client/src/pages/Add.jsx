@@ -12,7 +12,7 @@ const Add = () => {
   };
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:3000/restaurants", {
+      const response = await fetch("http://localhost:5000/restaurants", {
         method: "POST",
         body: JSON.stringify(restaurant),
       });

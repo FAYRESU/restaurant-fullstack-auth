@@ -6,7 +6,7 @@ const Card = (props) => {
     if (!isConfirmed) return;
 
     try {
-      const response = await fetch("http://localhost:3000/restaurants/" + id, {
+      const response = await fetch("http://localhost:5000/restaurants/" + id, {
         method: "DELETE",
       });
       if (response.ok) {
