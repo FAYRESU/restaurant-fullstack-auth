@@ -1,5 +1,5 @@
 import sequelize from "./db.js";
-
+import { DataTypes } from "sequelize"; // <-- this is the missing piece
 
 const User = sequelize.define("user", {
   username: {
@@ -18,9 +18,8 @@ const User = sequelize.define("user", {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
 });
-
 
 User.sync({ force: false })
   .then(() => {
@@ -29,6 +28,5 @@ User.sync({ force: false })
   .catch((error) => {
     console.error("Error creating table", error);
   });
-
 
 export default User;
