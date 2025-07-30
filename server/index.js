@@ -1,8 +1,7 @@
-//const express = require("express");
 import express from "express";
-//const dotenv = require("dotenv");
 import dotenv from "dotenv";
 import cors from "cors";
+
 import restaurantRouter from "./routers/restaurant.routers.js";
 import authRouter from "./routers/auth.router.js";
 
@@ -14,39 +13,47 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Sequelize
 import db from "./models/index.js";
 const Role = db.Role;
-const initRole = () => {
-  Role.create({ id: 1, roleName: "user" });
-  Role.create({ id: 2, roleName: "moderator" });
-  Role.create({ id: 3, roleName: "admin" });
+
+// Function to initialize roles
+const initRole = async () => {
+  try {
+    await Role.findOrCreate({ where: { id: 1 }, defaults: { roleName: "user" } });
+    await Role.findOrCreate({ where: { id: 2 }, defaults: { roleName: "moderator" } });
+    await Role.findOrCreate({ where: { id: 3 }, defaults: { roleName: "admin" } });
+    console.log("Initial roles created");
+  } catch (err) {
+    console.error("Error initializing roles:", err);
+  }
 };
-db.sequelize.sync({ force: true }).then(() => {
-  initRole();
-});
 
+// Sync database
 db.sequelize.sync({ force: false }).then(() => {
-  console.log("create table user_roles");
+  console.log("Database synced");
+  initRole(); // run after syncing
 });
 
+// Homepage
 app.get("/", (req, res) => {
   res.send("Restaurant Restful API");
 });
 
+// Enable CORS
 app.use(
   cors({
-    oring: ["http://localhost:5173", "127.0.0.1:5173"],
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-//use router
+// Routers
 app.use("/api/v1/restaurants", restaurantRouter);
-
-//use authentication roter
 app.use("/api/v1", authRouter);
 
+// Start server
 app.listen(PORT, () => {
   console.log("Listening to http://localhost:" + PORT);
 });

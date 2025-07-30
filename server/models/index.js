@@ -19,14 +19,16 @@ db.Role = Role;
 
 // Association
 db.User.belongsToMany(db.Role, {
-    through: "user_roles",
+    through: 'user_roles',
+    // as: 'roles',
     foreignKey: "userId",
     otherKey: "roleId",
 });
 
 
 db.Role.belongsToMany(db.User, {
-    through: "user_roles",
+    through: 'user_roles',
+    // as: 'users',
     foreignKey: "roleId",
     otherKey: "userId",
 });

@@ -75,48 +75,53 @@ authController.Register = async (req, res) => {
 
 authController.signIn = async (req, res) => {
   const { username, password } = req.body;
+
   if (!username || !password) {
     res.status(400).send({ message: "Username or Password are missing." });
     return;
   }
-  await User.findOne({
-    where: { username: username },
-  })
-    .then((user) => {
-      if (!user) {
-        res.status(404).send({ message: "User Not Found!" });
-        return;
-      }
-      const passwordIsValid = bcrypt.compareSync(password, user.password);
-      if (!passwordIsValid) {
-        res.status(401).send({ message: "Invalid password" });
-      }
-      //Valid User
-      const token = jwt.sign({ username: user.username }, config.secret, {
-        expiresIn: 864000, //60sec * 60min * 24h = 24 ชั่วโมง
-      });
-      const authorities = [];
-      user.getRoles().then((roles) => {
-        for (let i = 0; i < roles.length; i++) {
-          //ROLES_USER
-          authorities.push("ROLES_" + roles[i].name.toUpperCase());
-        }
-        res.send({
-          token: token,
-          authorities: authorities,
-          userInfo: {
-            name: user.name,
-            email: user.email,
-            username: user.username, //ไม่ใส่ password เพราะเป็นความปลอดภัยของผู้ใช้
-          },
-        });
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Something error while SignIn a user",
-      });
+
+  try {
+    const user = await User.findOne({ where: { username } });
+
+    if (!user) {
+      return res.status(404).send({ message: "User Not Found!" });
+    }
+
+    const passwordIsValid = bcrypt.compareSync(password, user.password);
+    if (!passwordIsValid) {
+      return res.status(401).send({ message: "Invalid password" });
+    }
+
+    // สร้าง token
+    const token = jwt.sign({ username: user.username }, config.secret, {
+      expiresIn: 60 * 60 * 24, // 24 ชั่วโมง
     });
+
+    // ดึง role ที่ผู้ใช้มี
+    const roles = await user.getRoles();
+    const authorities = [];
+
+    roles.forEach((role) => {
+      if (role && role.name) {
+        authorities.push("ROLES_" + role.name.toUpperCase());
+      }
+    });
+
+    res.status(200).send({
+      token: token,
+      authorities: authorities,
+      userInfo: {
+        name: user.name,
+        email: user.email,
+        username: user.username,
+      },
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Something went wrong while signing in.",
+    });
+  }
 };
 
 export default authController;
