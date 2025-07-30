@@ -6,8 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # run cmd
-RUN npm install
-RUN npm install -g nodemon
+RUN npm install -g nodemon && npm install
 
 # copy จาก ผู้ใช้ทางฝั่งซ้าย ไปยังฝั่งขวาคือ server 
 COPY . .
@@ -15,4 +14,4 @@ COPY . .
 # localhost server post 3000
 EXPOSE 5000
 #npm start
-CMD [ "npm", "run", "dev" ] 
+CMD [ "nodemon", "index.js" ] 

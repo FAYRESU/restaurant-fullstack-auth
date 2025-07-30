@@ -19,7 +19,7 @@ const Home = () => {
   };
   useEffect(() => {
     //cal api: getAllRestaurants
-    fetch("http://localhost:3000/restaurants")
+    fetch("http://localhost:5000/api/v1/restaurants")
       .then((res) => {
         //convert to json format
         console.log(res);

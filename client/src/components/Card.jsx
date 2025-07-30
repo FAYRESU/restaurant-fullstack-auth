@@ -6,7 +6,7 @@ const Card = (props) => {
     if (!isConfirmed) return;
 
     try {
-      const response = await fetch("http://localhost:3000/restaurants/" + id, {
+      const response = await fetch("http://localhost:5000/api/v1/restaurants/" + id, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -21,7 +21,7 @@ const Card = (props) => {
   return (
     <div className="card bg-base-100 w-96 shadow-sm">
       <figure>
-        <img src={props.img} alt="Restaurant" />
+        <img src={props.imageUrl} alt="Restaurant" />
       </figure>
       <div className="card-body">
         <h2 className="card-title">

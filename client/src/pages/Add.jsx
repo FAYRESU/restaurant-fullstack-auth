@@ -1,27 +1,35 @@
 import React, { useState } from "react";
 
 const Add = () => {
-  const [restaurant, setRestaurant] = useState({
+  const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
-    img: "",
+    imageUrl: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRestaurant({ ...restaurant, [name]: value });
+    setRestaurant({ ...restaurants, [name]: value });
+  };
+  const newRestaurant = {
+    title: restaurants.title,
+    type: restaurants.type,
+    imageUrl: restaurants.imageUrl,
   };
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:3000/restaurants", {
+      const response = await fetch("http://localhost:5000/api/v1/restaurants", {
         method: "POST",
-        body: JSON.stringify(restaurant),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newRestaurant),
       });
       if (response.ok) {
         alert("Restaurannt Adds succesfully!!!");
         setRestaurant({
           title: "",
           type: "",
-          img: "",
+          imageUrl: "",
         });
       }
     } catch (error) {
@@ -69,29 +77,35 @@ const Add = () => {
               </label>
               <input
                 type="text"
-                ClassName="grow"
+                className="grow"
                 class="w-full input input-bordered"
                 onChange={handleChange}
                 placeholder="Restaurant Img"
-                name="img"
+                name="imageUrl"
               />
 
-              {restaurant.img && (
-                <div ClassName="flex items-center gap-2">
-                  <img ClassName="h-32" src={restaurant.img}></img>
+              {restaurants.imageUrl && (
+                <div className="flex items-center gap-2">
+                  <img className="h-32" src={restaurants.imageUrl}></img>
                 </div>
               )}
             </div>
 
             <div class="flex justify-center items-center my-6 space-x-4">
-              <button
+              <a
+                href={"/"}
                 type="submit"
                 class="btn bg-green-500 text-white px-6"
                 onClick={handleSubmit}
               >
                 Add
-              </button>
-              <a href={"/"} button type="button" class="btn bg-red-500 text-white px-6">
+              </a>
+              <a
+                href={"/"}
+                button
+                type="button"
+                class="btn bg-red-500 text-white px-6"
+              >
                 Cancel
               </a>
             </div>
