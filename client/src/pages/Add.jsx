@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import RestaurantService from "../service/restaurant.sevice";
 import Swal from "sweetalert2";
 
@@ -6,7 +7,7 @@ const Add = () => {
   const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
-    imageUrl: "",
+    img: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,8 +16,9 @@ const Add = () => {
   const newRestaurant = {
     title: restaurants.title,
     type: restaurants.type,
-    imageUrl: restaurants.imageUrl,
+    img: restaurants.img,
   };
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/v1/restaurants", {
@@ -31,13 +33,27 @@ const Add = () => {
         setRestaurant({
           title: "",
           type: "",
-          imageUrl: "",
+          img: "",
+        });
+        navigate("/");
+      } else {
+        const errorData = await response.json();
+        Swal.fire({
+          title: "Error adding restaurant",
+          icon: "error",
+          text: errorData.message || "Something went wrong!",
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error during add:", error);
+      Swal.fire({
+        title: "Error adding restaurant",
+        icon: "error",
+        text: error.message || "Something went wrong!",
+      });
     }
   };
+
   return (
     <div className="container mx-auto">
       <div class="relative flex flex-col justify-center h-screen overflow-hidden">
@@ -57,6 +73,7 @@ const Add = () => {
                 class="w-full input input-bordered"
                 name="title"
                 onChange={handleChange}
+                value={restaurants.title}
               />
             </div>
 
@@ -70,6 +87,7 @@ const Add = () => {
                 class="w-full input input-bordered"
                 name="type"
                 onChange={handleChange}
+                value={restaurants.type}
               />
             </div>
 
@@ -83,12 +101,13 @@ const Add = () => {
                 class="w-full input input-bordered"
                 onChange={handleChange}
                 placeholder="Restaurant Img"
-                name="imageUrl"
+                name="img"
+                value={restaurants.img}
               />
 
-              {restaurants.imageUrl && (
+              {restaurants.img && (
                 <div className="flex items-center gap-2">
-                  <img className="h-32" src={restaurants.imageUrl}></img>
+                  <img className="h-32" src={restaurants.img}></img>
                 </div>
               )}
             </div>

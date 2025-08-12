@@ -8,13 +8,13 @@ const Restaurants = ({ restaurants }) => {
     <div className="flex">
       <div className="flex flex-wrap justify-center gap-4">
         {Array.isArray(restaurants) &&
-          restaurants.map((restaurant) => (
+          restaurants.map((restaurants) => (
             <Card
-              key={restaurant.id}
-              id={restaurant.id}
-              title={restaurant.title}
-              type={restaurant.type}
-              imageUrl={restaurant.imageUrl}
+              key={restaurants.id}
+              id={restaurants.id}
+              title={restaurants.title}
+              type={restaurants.type}
+              img={restaurants.img}
             />
           ))}
       </div>

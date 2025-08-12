@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 function Login() {
   const navigate = useNavigate();
@@ -27,89 +28,99 @@ function Login() {
       });
 
       if (response.ok) {
-        alert("ท่านลงทะเบียนเข้าใช้สำเร็จ");
-        setLogin({ username: "", password: "" });
-        setError("");
-        navigate("/");
+        const data = await response.json();
+        localStorage.setItem("userToken", data.token);
+        Swal.fire({
+          icon: "success",
+          title: "เข้าสู่ระบบสำเร็จ 🎉",
+          text: "ยินดีต้อนรับกลับ!",
+          confirmButtonColor: "#3b82f6",
+        }).then(() => {
+          setLogin({ username: "", password: "" });
+          setError("");
+          navigate("/");
+        });
       } else {
         const errorData = await response.json();
-        setError(errorData.message || "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+        Swal.fire({
+          icon: "error",
+          title: "เข้าสู่ระบบไม่สำเร็จ",
+          text: errorData.message || "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+          confirmButtonColor: "#ef4444",
+        });
       }
     } catch (error) {
       console.error("Error during login:", error);
-      setError("เกิดข้อผิดพลาด กรุณาลองใหม่");
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด",
+        text: "กรุณาลองใหม่อีกครั้ง",
+        confirmButtonColor: "#ef4444",
+      });
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 to-blue-300 dark:from-gray-900 dark:to-gray-800 px-4">
-      <form
-        className="bg-white dark:bg-gray-900 shadow-2xl rounded-2xl p-8 sm:p-10 w-full max-w-md space-y-6"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-3xl font-extrabold text-center text-gray-900 dark:text-white">
-          เข้าสู่ระบบ
-        </h2>
-
-        {error && (
-          <p className="text-red-500 text-center text-sm font-semibold">
-            {error}
-          </p>
-        )}
-
-        <div>
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-          >
-            Username
-          </label>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            value={login.username}
-            onChange={handleChange}
-            placeholder="Your username"
-            required
-            className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={login.password}
-            onChange={handleChange}
-            placeholder="********"
-            required
-            className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+    <div className="flex justify-center items-center min-h-screen bg-base-200 px-4">
+      <div className="card w-full max-w-md shadow-2xl bg-base-100">
+        <form
+          className="card-body space-y-4"
+          onSubmit={handleSubmit}
         >
-          เข้าสู่ระบบ
-        </button>
+          <h2 className="text-3xl font-bold text-center text-primary">
+            เข้าสู่ระบบ
+          </h2>
 
-        <button
-          type="button"
-          className="w-full bg-gray-300 hover:bg-gray-400 dark:bg-red-500 dark:hover:bg-red-600 text-black dark:text-white font-bold py-2 px-4 rounded-lg transition duration-200"
-          onClick={() => setLogin({ username: "", password: "" })}
-        >
-          ยกเลิก
-        </button>
-      </form>
+          {/* Username */}
+          <div className="form-control">
+            <label className="label font-medium">
+              <span className="label-text">Username</span>
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={login.username}
+              onChange={handleChange}
+              placeholder="Your username"
+              required
+              className="input input-bordered focus:input-primary"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="form-control">
+            <label className="label font-medium">
+              <span className="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={login.password}
+              onChange={handleChange}
+              placeholder="********"
+              required
+              className="input input-bordered focus:input-primary"
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="form-control mt-4 space-y-3">
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+            >
+              เข้าสู่ระบบ
+            </button>
+            <button
+              type="button"
+              className="btn btn-error w-full text-white"
+              onClick={() => setLogin({ username: "", password: "" })}
+            >
+              ยกเลิก
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

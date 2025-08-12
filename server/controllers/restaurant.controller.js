@@ -1,10 +1,10 @@
-import Restaurant from "../models/restuarant.model.js";
+import Restaurant from "../models/restaurant.model.js";
 const restaurantController = {};
 //Creatw and save a new restaurant
 restaurantController.create = async (req, res) => {
   const { title, type, imageUrl } = req.body;
   //validate data
-  if (!title || !type || !imageUrl) {
+  if (!title || !type || !img) {
     res.status(400).send({ message: "title , Type or imgUrl Can't be empty" });
     return;
   }
@@ -16,7 +16,7 @@ restaurantController.create = async (req, res) => {
     const newRestaurant = {
       title,
       type,
-      imageUrl,
+      img,
     };
 
     Restaurant.create(newRestaurant)
@@ -71,12 +71,12 @@ restaurantController.update = async (req, res) => {
   const id = req.params.id;
   const { title, type, imageUrl } = req.body;
   //validate data
-  if (!title && !type && !imageUrl) {
+  if (!title && !type && !img) {
     res.status(404).send({ message: "Name, Type and Image can not be empty!" });
     return;
   }
   await Restaurant.update(
-    { title, type, imageUrl: imageUrl },
+    { title, type, img: img },
     {
       where: { id: id },
     }

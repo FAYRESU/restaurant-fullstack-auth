@@ -9,34 +9,33 @@ const Update = () => {
   const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
-    imageUrl: "",
+    img: "",
   });
 
-  //2.GEt Restaurant
   useEffect(() => {
-    //cal api: getAllRestaurants
-    const editRestaurantById = async (id) => {
+    const fetchRestaurant = async () => {
       try {
-        const response = await RestaurantService.editRestaurantById();
-        // console.log(response);
-
-        if (response.ok) {
-          alert("Restaurant Updated succesfully!!!");
-          setRestaurant({
-            title: "",
-            type: "",
-            imageUrl: "",
+        const response = await fetch('/db.json');
+        const data = await response.json();
+        const editRestaurantById = data.restaurants.find(r => r.id === id);
+        if (editRestaurantById) {
+          setRestaurant(editRestaurantById);
+        } else {
+          Swal.fire({
+            title: "Restaurant Not Found",
+            icon: "error",
+            text: `No restaurant found with ID: ${id}`,
           });
         }
       } catch (error) {
         Swal.fire({
-          title: "Update Restaurants",
+          title: "Error fetching restaurant",
           icon: "error",
-          text: error?.response?.data?.message || error.message,
+          text: error.message,
         });
       }
     };
-    editRestaurantById();
+    fetchRestaurant();
   }, [id]);
 
   const handleChange = (e) => {
@@ -114,7 +113,7 @@ const Update = () => {
                 class="w-full input input-bordered"
                 onChange={handleChange}
                 placeholder="Restaurant Img"
-                value={restaurants.imageUrl}
+                value={restaurants.img}
                 name="img"
               />
 
@@ -132,7 +131,7 @@ const Update = () => {
                 class="btn bg-green-500 text-white px-6"
                 onClick={handleSubmit}
               >
-                Add
+                Update
               </a>
               <a
                 href={"/"}

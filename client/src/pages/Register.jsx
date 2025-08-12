@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -28,32 +29,53 @@ export default function Register() {
       });
 
       if (response.ok) {
-        alert("ท่านลงทะเบียนเข้าใช้สำเร็จ");
-        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "สมัครสมาชิกสำเร็จ 🎉",
+          text: "คุณสามารถเข้าสู่ระบบได้แล้ว",
+          confirmButtonColor: "#4ade80", // green
+        }).then(() => {
+          navigate("/login");
+        });
       } else {
         const data = await response.json();
-        alert(`เกิดข้อผิดพลาด: ${data.message || "ไม่สามารถลงทะเบียนได้"}`);
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด",
+          text: data.message || "ไม่สามารถลงทะเบียนได้",
+          confirmButtonColor: "#ef4444", // red
+        });
       }
     } catch (err) {
-      console.error(err);
-      alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
+      Swal.fire({
+        icon: "error",
+        title: "การเชื่อมต่อล้มเหลว",
+        text: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้",
+        confirmButtonColor: "#ef4444",
+      });
     }
   };
 
   return (
-    <div className="min-h-screen bg-base-200 flex items-center justify-center">
-      <div className="card w-full max-w-md shadow-lg bg-base-100">
-        <form className="card-body" onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-center mb-4">สมัครสมาชิก</h2>
+    <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">
+      <div className="card w-full max-w-md shadow-2xl bg-base-100">
+        <form className="card-body space-y-4" onSubmit={handleSubmit}>
+          <h2 className="text-3xl font-bold text-center text-primary mb-2">
+            สมัครสมาชิก
+          </h2>
+          <p className="text-center text-gray-500 mb-4">
+            กรอกข้อมูลด้านล่างเพื่อสร้างบัญชีของคุณ
+          </p>
 
+          {/* Username */}
           <div className="form-control">
-            <label className="label">
+            <label className="label font-medium">
               <span className="label-text">Username</span>
             </label>
             <input
               type="text"
               name="username"
-              className="input input-bordered"
+              className="input input-bordered focus:input-primary"
               placeholder="ชื่อผู้ใช้"
               required
               value={formData.username}
@@ -61,14 +83,15 @@ export default function Register() {
             />
           </div>
 
+          {/* Full Name */}
           <div className="form-control">
-            <label className="label">
+            <label className="label font-medium">
               <span className="label-text">Full Name</span>
             </label>
             <input
               type="text"
               name="fullName"
-              className="input input-bordered"
+              className="input input-bordered focus:input-primary"
               placeholder="ชื่อเต็ม"
               required
               value={formData.fullName}
@@ -76,14 +99,15 @@ export default function Register() {
             />
           </div>
 
+          {/* Email */}
           <div className="form-control">
-            <label className="label">
+            <label className="label font-medium">
               <span className="label-text">Email</span>
             </label>
             <input
               type="email"
               name="email"
-              className="input input-bordered"
+              className="input input-bordered focus:input-primary"
               placeholder="your@email.com"
               required
               value={formData.email}
@@ -91,14 +115,15 @@ export default function Register() {
             />
           </div>
 
+          {/* Password */}
           <div className="form-control">
-            <label className="label">
+            <label className="label font-medium">
               <span className="label-text">Password</span>
             </label>
             <input
               type="password"
               name="password"
-              className="input input-bordered"
+              className="input input-bordered focus:input-primary"
               placeholder="รหัสผ่าน"
               required
               value={formData.password}
@@ -106,8 +131,12 @@ export default function Register() {
             />
           </div>
 
+          {/* Button */}
           <div className="form-control mt-6">
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary w-full text-white"
+            >
               สมัครสมาชิก
             </button>
           </div>

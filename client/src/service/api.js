@@ -15,7 +15,7 @@ instance.interceptors.request.use(
     //TODO
     const token = TokenService.getLocalAccessToken();
     if (token) {
-      config.hesders["x-access-token"] = token;
+      config.headers["x-access-token"] = token;
     }
     return config;
   },
