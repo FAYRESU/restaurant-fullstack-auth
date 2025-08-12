@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   {
     path: "/add",
     element: <Add />,
-  },
+   },
   {
     path: "/update/:id",
     element: <Update />,

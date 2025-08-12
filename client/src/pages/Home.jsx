@@ -11,10 +11,10 @@ const Home = () => {
       SetFilterRestaurants(restaurants);
       return;
     }
-    const result = restaurants.filter((restaurant) => {
+    const result = restaurants.filter((restaurants) => {
       return (
-        restaurant.title.toLowerCase().includes(keyword.toLowerCase()) ||
-        restaurant.type.toLowerCase().includes(keyword.toLowerCase())
+        restaurants.title.toLowerCase().includes(keyword.toLowerCase()) ||
+        restaurants.type.toLowerCase().includes(keyword.toLowerCase())
       );
     });
 
