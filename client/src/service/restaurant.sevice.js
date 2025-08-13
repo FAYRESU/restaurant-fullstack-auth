@@ -1,31 +1,30 @@
 import api from "./api";
 
-const RESTO_API = import.meta.env.VITE_RESTO_API;
+const RESTO_API = import.meta.env.VITE_RESTO_API; 
 
-const getAllRestaurants = () => {
-  return axios.get(`${BASE_URL}/restaurants`);
-};
+// GET all restaurants
+const getAllRestaurants = async () => api.get(`${RESTO_API}`);
 
-const getRestaurantById = async (id) => {
-  return await api.get(`${RESTO_API}/${id}`);
-};
+// GET by ID
+const getRestaurantById = async (id) => api.get(`${RESTO_API}/${id}`);
 
-const editRestaurantById = async (id, data) => {
-  return await api.put(`${RESTO_API}/${id}`, data);
-};
+// UPDATE by ID
+const editRestaurantById = async (id, restaurant) => api.put(`${RESTO_API}/${id}`, restaurant);
 
-const insertRestaurant = async (data) => {
-  return await api.post(RESTO_API, data);
-};
+// ADD new restaurant
+const insertRestaurant = async (restaurant) => api.post(`${RESTO_API}`, restaurant);
 
-const deleteRestaurant = async (id) => {
-  return await api.delete(`${RESTO_API}/${id}`);
-};
+// DELETE by ID
+const deleteRestaurant = async (id) => api.delete(`${RESTO_API}/${id}`);
 
-export default {
+const restaurantService = {
   getAllRestaurants,
   getRestaurantById,
   editRestaurantById,
   insertRestaurant,
   deleteRestaurant,
 };
+
+
+
+export default restaurantService;

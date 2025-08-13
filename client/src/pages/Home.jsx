@@ -8,7 +8,7 @@ const Home = () => {
   const [filetedRestaurants, SetFilterRestaurants] = useState([]);
   const handleSearch = (keyword) => {
     if (keyword === "") {
-      SetFilterRestaurants(restaurants);
+     SetFilterRestaurants(restaurants);
       return;
     }
     const result = restaurants.filter((restaurants) => {

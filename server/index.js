@@ -55,5 +55,5 @@ app.use("/api/v1", authRouter);
 
 // Start server
 app.listen(PORT, () => {
-  console.log("Listening to http://localhost:" + PORT);
+  console.log(`Server running on http://0.0.0.0:${PORT}`);
 });
