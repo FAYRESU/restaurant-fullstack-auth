@@ -1,6 +1,9 @@
 import React from "react";
+import { useAuthContext } from "../context/AuthContext";
+import UserProfile from "./UserProfile";
 
 const NavBar = () => {
+  const { user } = useAuthContext();
   const menuItems = [
     {
       name: "Search",
@@ -19,6 +22,7 @@ const NavBar = () => {
     <div>
       <div className="navbar bg-base-100 shadow-sm">
         <div className="navbar-start">
+          {/* Dropdown menu */}
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
@@ -28,13 +32,12 @@ const NavBar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
                   d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
+                />
               </svg>
             </div>
             <ul
@@ -48,10 +51,11 @@ const NavBar = () => {
               ))}
             </ul>
           </div>
-          <a href={"/"} className="btn btn-ghost text-xl">
+          <a href="/" className="btn btn-ghost text-xl">
             Grab Restaurant
           </a>
         </div>
+
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             {menuItems.map((item) => (
@@ -61,13 +65,22 @@ const NavBar = () => {
             ))}
           </ul>
         </div>
+
         <div className="navbar-end flex gap-4">
-          <a href="/register" className="btn btn-outline btn-primary">
-            Register
-          </a>
-          <a href="/login" className="btn btn-outline btn-success">
-            Login
-          </a>
+          {user ? (
+            <div>
+              <UserProfile />
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <a href="/register" className="btn btn-outline btn-primary">
+                Register
+              </a>
+              <a href="/login" className="btn btn-outline btn-success">
+                Login
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </div>

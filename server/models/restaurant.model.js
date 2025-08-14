@@ -1,5 +1,5 @@
 // models/Restaurant.js
-import { DataTypes } from 'sequelize';
+import { DataTypes } from "sequelize";
 import sequelize from "./db.js";
 
 const Restaurant = sequelize.define("restaurants", {
@@ -16,7 +16,7 @@ const Restaurant = sequelize.define("restaurants", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  img: {
+  imageUrl: {
     type: DataTypes.STRING,
     allowNull: false,
   },
