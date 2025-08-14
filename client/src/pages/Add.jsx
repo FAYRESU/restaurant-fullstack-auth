@@ -7,7 +7,7 @@ const Add = () => {
   const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
-    img: "",
+    imageUrl: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,7 +16,7 @@ const Add = () => {
   const newRestaurant = {
     title: restaurants.title,
     type: restaurants.type,
-    img: restaurants.img,
+    imageUrl: restaurants.imageUrl,
   };
   const navigate = useNavigate();
   const handleSubmit = async () => {
@@ -33,7 +33,7 @@ const Add = () => {
         setRestaurant({
           title: "",
           type: "",
-          img: "",
+          imageUrl: "",
         });
         navigate("/");
       } else {
@@ -102,12 +102,12 @@ const Add = () => {
                 onChange={handleChange}
                 placeholder="Restaurant Img"
                 name="img"
-                value={restaurants.img}
+                value={restaurants.imageUrl}
               />
 
-              {restaurants.img && (
+              {restaurants.imageUrl && (
                 <div className="flex items-center gap-2">
-                  <img className="h-32" src={restaurants.img}></img>
+                  <img className="h-32" src={restaurants.imageUrl}></img>
                 </div>
               )}
             </div>

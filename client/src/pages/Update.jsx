@@ -9,7 +9,7 @@ const Update = () => {
   const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
-    img: "",
+    imageUrl: "",
   });
 
   useEffect(() => {
@@ -113,7 +113,7 @@ const Update = () => {
                 class="w-full input input-bordered"
                 onChange={handleChange}
                 placeholder="Restaurant Img"
-                value={restaurants.img}
+                value={restaurants.imageUrl}
                 name="img"
               />
 
