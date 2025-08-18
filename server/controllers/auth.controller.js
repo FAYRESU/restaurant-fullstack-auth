@@ -38,6 +38,7 @@ authController.Register = async (req, res) => {
         fullName: fullName,
         email: email,
         password: bcrypt.hashSync(password, 8),
+      
       };
 
       User.create(newUser)
@@ -103,8 +104,8 @@ authController.signIn = async (req, res) => {
     const authorities = [];
 
     roles.forEach((role) => {
-      if (role && role.name) {
-        authorities.push("ROLES_" + role.name.toUpperCase());
+      if (role && role.roleName) {
+        authorities.push("ROLES_" + role.roleName.toUpperCase());
       }
     });
 
