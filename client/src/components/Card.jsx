@@ -1,7 +1,10 @@
 import React from "react";
 import restaurantService from "../service/restaurant.sevice";
+import { useAuthContext } from "../context/AuthContext";
 
 const Card = (props) => {
+  const { user } = useAuthContext();
+  console.log("Card User", user.authorities);
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm(
       "Are you sure you want to delete this restaurant?"
@@ -33,17 +36,28 @@ const Card = (props) => {
           <div className="badge badge-accent text-white">NEW</div>
         </h2>
         <p className="text-sm text-gray-500">{props.type}</p>
-        <div className="card-actions justify-end mt-4">
-          <button
-            onClick={() => handleDelete(props.id)}
-            className="btn btn-error btn-sm"
-          >
-            Delete
-          </button>
-          <a href={`/update/${props.id}`} className="btn btn-warning btn-sm">
-            Edit
-          </a>
-        </div>
+
+        {user && user?.authorities.includes("ROLES_ADMIN") && (
+          <div className="card-actions justify-end mt-4">
+            <button
+              onClick={() => handleDelete(props.id)}
+              className="btn btn-error btn-sm"
+            >
+              Delete
+            </button>
+            <a href={`/update/${props.id}`} className="btn btn-warning btn-sm">
+              Edit
+            </a>
+          </div>
+        )}
+
+        {user && user?.authorities.includes("ROLES_MODERATOR") && (
+          <div className="card-actions justify-end mt-4">
+            <a href={`/update/${props.id}`} className="btn btn-warning btn-sm">
+              Edit
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

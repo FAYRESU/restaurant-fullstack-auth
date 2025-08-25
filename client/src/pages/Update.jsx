@@ -4,8 +4,8 @@ import RestaurantService from "../service/restaurant.sevice";
 import Swal from "sweetalert2";
 
 const Update = () => {
-  //Get ID from URL
   const { id } = useParams();
+
   const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
@@ -15,11 +15,9 @@ const Update = () => {
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const response = await fetch('/db.json');
-        const data = await response.json();
-        const editRestaurantById = data.restaurants.find(r => r.id === id);
-        if (editRestaurantById) {
-          setRestaurant(editRestaurantById);
+        const response = await RestaurantService.getRestaurantById(id);
+        if (response.status === 200) {
+          setRestaurant(response.data);
         } else {
           Swal.fire({
             title: "Restaurant Not Found",
@@ -42,28 +40,30 @@ const Update = () => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurants, [name]: value });
   };
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // prevent form from reloading the page
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/v1/restaurants/" + id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(restaurants),
-        }
+      const response = await RestaurantService.editRestaurantById(
+        id,
+        restaurants
       );
-      if (response.ok) {
-        alert("Restaurant Updated succesfully!!!");
-        setRestaurant({
-          title: "",
-          type: "",
-          imageUrl: "",
+      if (response.status === 200) {
+        setRestaurant(response.data);
+        Swal.fire({
+          title: "Restaurant Update Success",
+          icon: "success",
+          text: "Successfully updated restaurant.",
+        }).then(() => {
+          navigate("/");
         });
       }
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        title: "Error updating restaurant",
+        icon: "error",
+        text: error.message,
+      });
     }
   };
   return (

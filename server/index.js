@@ -18,21 +18,20 @@ import db from "./models/index.js";
 const Role = db.Role;
 
 // Function to initialize roles
-const initRole = async () => {
-  try {
-    await Role.findOrCreate({ where: { id: 1 }, defaults: { roleName: "user" } });
-    await Role.findOrCreate({ where: { id: 2 }, defaults: { roleName: "moderator" } });
-    await Role.findOrCreate({ where: { id: 3 }, defaults: { roleName: "admin" } });
-    console.log("Initial roles created");
-  } catch (err) {
-    console.error("Error initializing roles:", err);
-  }
-};
+// const initRole = async () => {
+//   try {
+//     await Role.findOrCreate({ where: { id: 1 }, defaults: { roleName: "user" } });
+//     await Role.findOrCreate({ where: { id: 2 }, defaults: { roleName: "moderator" } });
+//     await Role.findOrCreate({ where: { id: 3 }, defaults: { roleName: "admin" } });
+//     console.log("Initial roles created");
+//   } catch (err) {
+//     console.error("Error initializing roles:", err);
+//   }
+// };
 
 // Sync database
 db.sequelize.sync({ force: false }).then(() => {
-  console.log("Database synced");
-  initRole(); // run after syncing
+  console.log("Database synced")
 });
 
 // Homepage

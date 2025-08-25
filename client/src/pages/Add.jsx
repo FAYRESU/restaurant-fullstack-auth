@@ -9,39 +9,37 @@ const Add = () => {
     type: "",
     imageUrl: "",
   });
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurants, [name]: value });
   };
-  const newRestaurant = {
-    title: restaurants.title,
-    type: restaurants.type,
-    imageUrl: restaurants.imageUrl,
-  };
-  const navigate = useNavigate();
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/v1/restaurants", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newRestaurant),
-      });
-      if (response.ok) {
-        alert("Restaurannt Adds succesfully!!!");
+      const response = await RestaurantService.insertRestaurant(restaurants);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Add Restaurant",
+          icon: "success",
+          text: `Restaurant added successfully`,
+        }).then(() => {
+          navigate("/");
+        });
+
         setRestaurant({
           title: "",
           type: "",
           imageUrl: "",
         });
-        navigate("/");
       } else {
-        const errorData = await response.json();
         Swal.fire({
           title: "Error adding restaurant",
           icon: "error",
-          text: errorData.message || "Something went wrong!",
+          text: "Something went wrong!",
         });
       }
     } catch (error) {
@@ -56,21 +54,20 @@ const Add = () => {
 
   return (
     <div className="container mx-auto">
-      <div class="relative flex flex-col justify-center h-screen overflow-hidden">
-        <div class="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
-          <h1 class="text-2xl font-semibold text-center text-gray-700 mb-6">
+      <div className="relative flex flex-col justify-center h-screen overflow-hidden">
+        <div className="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
+          <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">
             Add Item
           </h1>
-          <form class="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label class="label">
-                <span class="text-base label-text">Title</span>
+              <label className="label">
+                <span className="text-base label-text">Title</span>
               </label>
-
               <input
                 type="text"
                 placeholder="Enter title"
-                class="w-full input input-bordered"
+                className="w-full input input-bordered"
                 name="title"
                 onChange={handleChange}
                 value={restaurants.title}
@@ -78,13 +75,13 @@ const Add = () => {
             </div>
 
             <div>
-              <label class="label">
-                <span class="text-base label-text">Type</span>
+              <label className="label">
+                <span className="text-base label-text">Type</span>
               </label>
               <input
                 type="text"
                 placeholder="Enter type"
-                class="w-full input input-bordered"
+                className="w-full input input-bordered"
                 name="type"
                 onChange={handleChange}
                 value={restaurants.type}
@@ -92,43 +89,42 @@ const Add = () => {
             </div>
 
             <div>
-              <label class="label">
-                <span class="text-base label-text">Image URL</span>
+              <label className="label">
+                <span className="text-base label-text">Image URL</span>
               </label>
               <input
                 type="text"
-                className="grow"
-                class="w-full input input-bordered"
+                className="w-full input input-bordered"
                 onChange={handleChange}
-                placeholder="Restaurant Img"
-                name="img"
+                placeholder="Restaurant Image URL"
+                name="imageUrl"
                 value={restaurants.imageUrl}
               />
-
               {restaurants.imageUrl && (
-                <div className="flex items-center gap-2">
-                  <img className="h-32" src={restaurants.imageUrl}></img>
+                <div className="flex items-center gap-2 mt-2">
+                  <img
+                    className="h-32"
+                    src={restaurants.imageUrl}
+                    alt="Restaurant Preview"
+                  />
                 </div>
               )}
             </div>
 
-            <div class="flex justify-center items-center my-6 space-x-4">
-              <a
-                href={"/"}
+            <div className="flex justify-center items-center my-6 space-x-4">
+              <button
                 type="submit"
-                class="btn bg-green-500 text-white px-6"
-                onClick={handleSubmit}
+                className="btn bg-green-500 text-white px-6"
               >
                 Add
-              </a>
-              <a
-                href={"/"}
-                button
+              </button>
+              <button
                 type="button"
-                class="btn bg-red-500 text-white px-6"
+                className="btn bg-red-500 text-white px-6"
+                onClick={() => navigate("/")}
               >
                 Cancel
-              </a>
+              </button>
             </div>
           </form>
         </div>
