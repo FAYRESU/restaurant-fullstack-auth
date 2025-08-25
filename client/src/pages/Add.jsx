@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import RestaurantService from "../service/restaurant.sevice";
 import Swal from "sweetalert2";
@@ -21,15 +21,20 @@ const Add = () => {
   const navigate = useNavigate();
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/v1/restaurants", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newRestaurant),
-      });
-      if (response.ok) {
-        alert("Restaurannt Adds succesfully!!!");
+      // const response = await fetch("http://localhost:5000/api/v1/restaurants", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newRestaurant),
+      // });
+      const response = await RestaurantService.insertRestaurant(restaurants);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Add Restaurant",
+          icon: "succes",
+          text: `Restaurants added Success`,
+        });
         setRestaurant({
           title: "",
           type: "",
