@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import RestaurantService from "../service/restaurant.sevice";
 import Swal from "sweetalert2";
-import restaurantService from "../service/restaurant.sevice";
 
 const Update = () => {
-  //Get ID from URL
   const { id } = useParams();
+
   const [restaurants, setRestaurant] = useState({
     title: "",
     type: "",
@@ -41,29 +40,30 @@ const Update = () => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurants, [name]: value });
   };
-  const handleSubmit = async () => {
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // prevent form from reloading the page
     try {
-      const response = await restaurantService.editRestaurantById(
+      const response = await RestaurantService.editRestaurantById(
         id,
         restaurants
       );
       if (response.status === 200) {
         setRestaurant(response.data);
-      } else {
         Swal.fire({
           title: "Restaurant Update Success",
-          icon: "Success",
-          text: `Sucess`,
+          icon: "success",
+          text: "Successfully updated restaurant.",
+        }).then(() => {
+          navigate("/");
         });
       }
-    }
-      catch (error) {
-        Swal.fire({
-          title: "Error update restaurant",
-          icon: "error",
-          text: error.message,
-        });
-      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error updating restaurant",
+        icon: "error",
+        text: error.message,
+      });
     }
   };
   return (
