@@ -12,17 +12,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const Role = db.Role;
 // Function to initialize roles
-const initRole = async () => {
-  try {
-    await Role.findOrCreate({ where: { id: 1 }, defaults: { roleName: "user" } });
-    await Role.findOrCreate({ where: { id: 2 }, defaults: { roleName: "moderator" } });
-    await Role.findOrCreate({ where: { id: 3 }, defaults: { roleName: "admin" } });
-    console.log("Initial roles created");
-  } catch (err) {
-    console.error("Error initializing roles:", err);
-  }
-};
-initRole();
+// const initRole = async () => {
+//   try {
+//     await Role.findOrCreate({ where: { id: 1 }, defaults: { roleName: "user" } });
+//     await Role.findOrCreate({ where: { id: 2 }, defaults: { roleName: "moderator" } });
+//     await Role.findOrCreate({ where: { id: 3 }, defaults: { roleName: "admin" } });
+//     console.log("Initial roles created");
+//   } catch (err) {
+//     console.error("Error initializing roles:", err);
+//   }
+// };
+// initRole();
 
 // Sync database
 db.sequelize.sync({ force: false }).then(() => {
