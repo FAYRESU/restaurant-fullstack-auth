@@ -22,6 +22,7 @@ const initRole = async () => {
     console.error("Error initializing roles:", err);
   }
 };
+initRole();
 
 // Sync database
 db.sequelize.sync({ force: false }).then(() => {
