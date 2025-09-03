@@ -1,22 +1,16 @@
 import express from "express";
+const app = express();
 import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
-
+const PORT = process.env.PORT || 5000;
 import restaurantRouter from "./routers/restaurant.routers.js";
 import authRouter from "./routers/auth.router.js";
-
-dotenv.config();
-
-const PORT = process.env.PORT || 5000;
-
-const app = express();
+import db from "./models/index.js";
+const FRONTEND_URL = process.env.FRONTEND_URL;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Sequelize
-import db from "./models/index.js";
 const Role = db.Role;
-
 // Function to initialize roles
 // const initRole = async () => {
 //   try {
@@ -31,7 +25,7 @@ const Role = db.Role;
 
 // Sync database
 db.sequelize.sync({ force: false }).then(() => {
-  console.log("Database synced")
+  console.log("create table user_roles")
 });
 
 // Homepage
@@ -42,7 +36,7 @@ app.get("/", (req, res) => {
 // Enable CORS
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173", FRONTEND_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
   })
@@ -54,5 +48,5 @@ app.use("/api/v1/auth", authRouter);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

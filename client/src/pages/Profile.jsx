@@ -13,50 +13,50 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 flex items-center justify-center px-4">
-      <div className="card w-full max-w-md shadow-xl bg-white border border-gray-200 rounded-xl transition-transform duration-300 hover:scale-[1.01]">
-        <div className="card-body items-center text-center">
-          {/* Avatar */}
-          <div className="avatar mb-4">
-            <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-md transition-transform hover:scale-105">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 flex items-center justify-center px-4">
+      <div className="card w-full max-w-md shadow-2xl bg-white/90 backdrop-blur-md border border-gray-200 rounded-3xl transition-transform duration-300 hover:scale-[1.02]">
+        <div className="card-body items-center text-center space-y-4">
+          {/* Cartoon Avatar */}
+          <div className="avatar mb-3">
+            <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 shadow-lg hover:scale-105 transition-transform">
               <img
-                src={`https://ui-avatars.com/api/?name=${user?.userInfo?.username}&background=random`}
+                src={`https://avatars.dicebear.com/api/adventurer/${user?.userInfo?.username}.svg`}
                 alt="avatar"
               />
             </div>
           </div>
 
           {/* Username */}
-          <h2 className="text-2xl font-semibold text-primary capitalize">
+          <h2 className="text-3xl font-bold text-indigo-600 capitalize drop-shadow">
             {user?.userInfo?.username || "Username"}
           </h2>
 
           {/* Email */}
-          <p className="text-sm text-gray-500 mb-1">
-            {user?.userInfo?.email || "Email"}
+          <p className="text-sm text-gray-600">
+            {user?.userInfo?.email || "example@email.com"}
           </p>
 
           {/* Role Badge */}
           {user?.authorities?.length > 0 && (
-            <div className="mt-1 mb-3">
-              <span className="badge badge-outline badge-secondary text-sm px-3 py-1">
+            <div className="mt-1">
+              <span className="badge badge-primary badge-outline text-sm px-4 py-2 shadow-md">
                 {user.authorities[0].replace("ROLE_", "")}
               </span>
             </div>
           )}
 
-          <div className="divider mt-2 mb-4" />
+          <div className="divider mt-4 mb-2" />
 
-          {/* Buttons */}
-          <div className="flex gap-3">
-            <button className="btn btn-outline btn-primary w-32 transition hover:scale-105 hover:shadow-lg">
-              Edit Profile
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+            <button className="btn btn-primary w-full sm:w-36 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition">
+              ✏️ Edit Profile
             </button>
             <button
               onClick={handleLogOut}
-              className="btn btn-outline btn-error w-32 transition hover:scale-105 hover:shadow-lg"
+              className="btn btn-error btn-outline w-full sm:w-36 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition"
             >
-              Logout
+              🚪 Logout
             </button>
           </div>
         </div>

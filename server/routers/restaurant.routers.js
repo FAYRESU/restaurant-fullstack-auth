@@ -3,13 +3,13 @@ import restaurantController from "../controllers/restaurant.controller.js";
 import authMiddleware from "../middleware/authJwt.js";
 
 const router = express.Router();
+const { verifyToken, isAdmin, isModOrAdmin } = authMiddleware;
 
 // POST http://localhost:5000/api/v1/restaurants
 router.post(
   "/",
   authMiddleware.verifyToken,
   authMiddleware.isModOrAdmin,
-  authMiddleware.isAdmin,
   restaurantController.create
 );
 
@@ -22,9 +22,7 @@ router.get("/:id", authMiddleware.verifyToken, restaurantController.getById); //
 // PUT http://localhost:5000/api/v1/restaurants/:id
 router.put(
   "/:id",
-  authMiddleware.verifyToken,
   authMiddleware.isModOrAdmin,
-  authMiddleware.isAdmin,
   restaurantController.update
 );
 

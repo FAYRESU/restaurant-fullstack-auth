@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import AuthService from "../service/auth.service";
 import Swal from "sweetalert2";
+
 const Register = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
@@ -28,7 +29,7 @@ const Register = () => {
       if (newUser.status === 200) {
         Swal.fire({
           icon: "success",
-          title: "เข้าสู่ระบบสำเร็จ",
+          title: "สมัครสมาชิกสำเร็จ",
           text: newUser.data.message,
         }).then(() => {
           setUser({
@@ -43,25 +44,24 @@ const Register = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "เข้าสู่ระบบล้มเหลว",
+        title: "สมัครสมาชิกไม่สำเร็จ",
         text: error?.response?.data?.message || error.message,
       });
     }
   };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-200 flex items-center justify-center px-4">
-      <div className="card w-full max-w-md shadow-2xl glass">
-        <div className="card-body space-y-4">
-          <h2 className="text-4xl font-bold text-center text-primary">
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-300 flex items-center justify-center px-4">
+      <div className="card w-full max-w-md shadow-2xl glass rounded-2xl border border-gray-200">
+        <div className="card-body space-y-6 text-center">
+          {/* Header */}
+          <h2 className="text-4xl font-extrabold text-indigo-600 drop-shadow">
             สมัครสมาชิก
           </h2>
-          <p className="text-center text-gray-500 mb-2">สร้างบัญชีใหม่ของคุณ</p>
+          <p className="text-gray-600">สร้างบัญชีใหม่ของคุณ</p>
 
-          {/* Username */}
-          <div className="form-control">
-            <label className="label font-medium">
-              <span className="label-text">ชื่อผู้ใช้</span>
-            </label>
+          {/* Form */}
+          <form className="space-y-4 flex flex-col items-center" onSubmit={handleSubmit}>
             <input
               type="text"
               name="username"
@@ -69,68 +69,46 @@ const Register = () => {
               onChange={handleChange}
               placeholder="ชื่อผู้ใช้"
               required
-              className="input input-bordered"
+              className="input input-bordered input-primary w-3/4 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 text-center"
             />
-          </div>
 
-          {/* Full Name */}
-          <div className="form-control">
-            <label className="label font-medium">
-              <span className="label-text">ชื่อเต็ม</span>
-            </label>
             <input
               type="text"
               name="fullName"
-              className="input input-bordered focus:input-primary"
-              placeholder="ชื่อ-นามสกุล"
-              required
               value={user.fullName}
               onChange={handleChange}
+              placeholder="ชื่อ-นามสกุล"
+              required
+              className="input input-bordered input-primary w-3/4 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 text-center"
             />
-          </div>
 
-          {/* Email */}
-          <div className="form-control">
-            <label className="label font-medium">
-              <span className="label-text">อีเมล</span>
-            </label>
             <input
               type="email"
               name="email"
-              className="input input-bordered focus:input-primary"
-              placeholder="email"
-              required
               value={user.email}
               onChange={handleChange}
+              placeholder="อีเมล"
+              required
+              className="input input-bordered input-primary w-3/4 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 text-center"
             />
-          </div>
 
-          {/* Password */}
-          <div className="form-control">
-            <label className="label font-medium">
-              <span className="label-text">รหัสผ่าน</span>
-            </label>
             <input
               type="password"
               name="password"
-              className="input input-bordered focus:input-primary"
-              placeholder="password"
-              required
               value={user.password}
               onChange={handleChange}
+              placeholder="รหัสผ่าน"
+              required
+              className="input input-bordered input-primary w-3/4 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 text-center"
             />
-          </div>
 
-          {/* Button */}
-          <div className="form-control mt-6 space-y-3">
             <button
               type="submit"
-              className="btn btn-primary w-full text-white"
-              onClick={handleSubmit}
+              className="btn btn-primary w-3/4 text-white rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200"
             >
               สมัครสมาชิก
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

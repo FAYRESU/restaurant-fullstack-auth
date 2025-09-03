@@ -13,7 +13,7 @@ const Login = () => {
     if (user) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,21 +47,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center px-4">
-      <div className="card w-full max-w-md shadow-2xl bg-base-100">
-        <div className="card-body space-y-5">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-primary">เข้าสู่ระบบ</h2>
-            <p className="text-sm text-gray-500 mt-1">
-              กรุณากรอกชื่อผู้ใช้และรหัสผ่าน
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-300 flex items-center justify-center px-4">
+      <div className="card w-full max-w-md shadow-2xl glass rounded-2xl border border-gray-200 flex justify-center">
+        <div className="card-body space-y-6 text-center">
+          {/* Header */}
+          <div>
+            <h2 className="text-4xl font-extrabold text-indigo-600 drop-shadow">
+              เข้าสู่ระบบ
+            </h2>
+            <p className="text-sm text-gray-600 mt-2">
+              กรุณากรอกชื่อผู้ใช้และรหัสผ่านของคุณ
             </p>
           </div>
 
           {/* Username */}
           <div className="form-control">
-            <label className="label font-medium">
-              <span className="label-text">ชื่อผู้ใช้</span>
-            </label>
             <input
               type="text"
               name="username"
@@ -69,15 +69,12 @@ const Login = () => {
               onChange={handleChange}
               placeholder="ชื่อผู้ใช้"
               required
-              className="input input-bordered"
+              className="input input-bordered input-primary rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 text-center"
             />
           </div>
 
           {/* Password */}
           <div className="form-control">
-            <label className="label font-medium">
-              <span className="label-text">รหัสผ่าน</span>
-            </label>
             <input
               type="password"
               name="password"
@@ -85,18 +82,24 @@ const Login = () => {
               onChange={handleChange}
               placeholder="รหัสผ่าน"
               required
-              className="input input-bordered"
+              className="input input-bordered input-primary rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 text-center"
             />
           </div>
 
-          {/* Action Buttons */}
-          <form className="form-control mt-4 space-y-2" onSubmit={handleSubmit}>
-            <button type="submit" className="btn btn-primary w-full">
+          {/* Buttons */}
+          <form
+            className="form-control mt-6 space-y-3 flex flex-col items-center"
+            onSubmit={handleSubmit}
+          >
+            <button
+              type="submit"
+              className="btn btn-primary w-3/4 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200 text-white"
+            >
               เข้าสู่ระบบ
             </button>
             <button
               type="button"
-              className="btn btn-outline btn-error w-full"
+              className="btn btn-outline btn-error w-3/4 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200"
               onClick={() => setLogin({ username: "", password: "" })}
             >
               ยกเลิก

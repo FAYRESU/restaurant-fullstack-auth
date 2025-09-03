@@ -17,7 +17,7 @@ instance.interceptors.request.use(
     const token = TokenService.getLocalAccessToken();
     if (token) {
       // Encode the token before setting the header to handle special characters
-      config.headers["x-access-token"] = encodeURIComponent(token);
+      config.headers["x-access-token"] = token;
     }
     return config;
   },

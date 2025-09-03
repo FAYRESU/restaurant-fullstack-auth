@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import RestaurantService from "../service/restaurant.sevice";
 import Swal from "sweetalert2";
 
 const Update = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [restaurants, setRestaurant] = useState({
     title: "",
@@ -42,7 +43,7 @@ const Update = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // prevent form from reloading the page
+    e.preventDefault();
     try {
       const response = await RestaurantService.editRestaurantById(
         id,
@@ -51,7 +52,7 @@ const Update = () => {
       if (response.status === 200) {
         setRestaurant(response.data);
         Swal.fire({
-          title: "Restaurant Update Success",
+          title: "Restaurant Updated",
           icon: "success",
           text: "Successfully updated restaurant.",
         }).then(() => {
@@ -66,83 +67,86 @@ const Update = () => {
       });
     }
   };
+
   return (
-    <div className="container mx-auto">
-      <div class="relative flex flex-col justify-center h-screen overflow-hidden">
-        <div class="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
-          <h1 class="text-2xl font-semibold text-center text-gray-700 mb-6">
-            Update Item
-          </h1>
-          <form class="space-y-4">
-            <div>
-              <label class="label">
-                <span class="text-base label-text">Title</span>
-              </label>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-300 px-4">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-xl border border-gray-200 p-6">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          ✏️ Update Restaurant
+        </h1>
 
-              <input
-                type="text"
-                name="title"
-                value={restaurants.title}
-                placeholder="Enter title"
-                class="w-full input input-bordered"
-                onChange={handleChange}
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Title */}
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">Title</span>
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={restaurants.title}
+              onChange={handleChange}
+              placeholder="Enter restaurant title"
+              className="w-full input input-bordered focus:ring-2 focus:ring-green-400"
+            />
+          </div>
 
-            <div>
-              <label class="label">
-                <span class="text-base label-text">Type</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Enter type"
-                class="w-full input input-bordered"
-                name="type"
-                value={restaurants.type}
-                onChange={handleChange}
-              />
-            </div>
+          {/* Type */}
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">Type</span>
+            </label>
+            <input
+              type="text"
+              name="type"
+              value={restaurants.type}
+              onChange={handleChange}
+              placeholder="Enter restaurant type"
+              className="w-full input input-bordered focus:ring-2 focus:ring-green-400"
+            />
+          </div>
 
-            <div>
-              <label class="label">
-                <span class="text-base label-text">Image URL</span>
-              </label>
-              <input
-                type="text"
-                ClassName="grow"
-                class="w-full input input-bordered"
-                onChange={handleChange}
-                placeholder="Restaurant Img"
-                value={restaurants.imageUrl}
-                name="img"
-              />
+          {/* Image URL */}
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">Image URL</span>
+            </label>
+            <input
+              type="text"
+              name="imageUrl"
+              value={restaurants.imageUrl}
+              onChange={handleChange}
+              placeholder="Restaurant image URL"
+              className="w-full input input-bordered focus:ring-2 focus:ring-green-400"
+            />
+            {restaurants.imageUrl && (
+              <div className="flex justify-center mt-4">
+                <img
+                  src={restaurants.imageUrl}
+                  alt="Preview"
+                  className="h-40 rounded-lg shadow-md object-cover"
+                />
+              </div>
+            )}
+          </div>
 
-              {restaurants.imageUrl && (
-                <div ClassName="flex items-center gap-2">
-                  <img ClassName="h-32" src={restaurants.imageUrl}></img>
-                </div>
-              )}
-            </div>
-
-            <div class="flex justify-center items-center my-6 space-x-4">
-              <a
-                href={"/"}
-                type="submit"
-                class="btn bg-green-500 text-white px-6"
-                onClick={handleSubmit}
-              >
-                Update
-              </a>
-              <a
-                href={"/"}
-                type="button"
-                class="btn bg-red-500 text-white px-6"
-              >
-                Cancel
-              </a>
-            </div>
-          </form>
-        </div>
+          {/* Buttons */}
+          <div className="flex justify-center gap-4 mt-6">
+            <button
+              type="submit"
+              className="btn bg-green-500 text-white w-32 hover:bg-green-600 shadow-md"
+            >
+              Update
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="btn bg-red-500 text-white w-32 hover:bg-red-600 shadow-md"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

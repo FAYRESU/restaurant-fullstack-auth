@@ -23,7 +23,7 @@ const Add = () => {
       const response = await RestaurantService.insertRestaurant(restaurants);
       if (response.status === 200) {
         Swal.fire({
-          title: "Add Restaurant",
+          title: "เพิ่มร้านอาหารสำเร็จ",
           icon: "success",
           text: `Restaurant added successfully`,
         }).then(() => {
@@ -37,7 +37,7 @@ const Add = () => {
         });
       } else {
         Swal.fire({
-          title: "Error adding restaurant",
+          title: "เกิดข้อผิดพลาด",
           icon: "error",
           text: "Something went wrong!",
         });
@@ -53,57 +53,60 @@ const Add = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <div className="relative flex flex-col justify-center h-screen overflow-hidden">
-        <div className="w-full p-6 m-auto bg-white rounded-md shadow-md ring-2 ring-gray-800/50 lg:max-w-lg">
-          <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-            Add Item
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-200 flex items-center justify-center px-4">
+      <div className="card w-full max-w-lg shadow-2xl glass rounded-2xl border border-gray-200">
+        <div className="card-body space-y-6">
+          <h1 className="text-3xl font-extrabold text-center text-indigo-600 drop-shadow">
+            ➕ Add Restaurant
           </h1>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label className="label">
-                <span className="text-base label-text">Title</span>
-              </label>
+          <p className="text-center text-gray-600 text-sm">
+            กรอกข้อมูลร้านอาหารเพื่อเพิ่มเข้าระบบ
+          </p>
+
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {/* Title */}
+            <div className="form-control">
+              <label className="label font-medium text-gray-700">Title</label>
               <input
                 type="text"
-                placeholder="Enter title"
-                className="w-full input input-bordered"
+                placeholder="Enter restaurant title"
+                className="input input-bordered input-primary rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400"
                 name="title"
                 onChange={handleChange}
                 value={restaurants.title}
               />
             </div>
 
-            <div>
-              <label className="label">
-                <span className="text-base label-text">Type</span>
-              </label>
+            {/* Type */}
+            <div className="form-control">
+              <label className="label font-medium text-gray-700">Type</label>
               <input
                 type="text"
-                placeholder="Enter type"
-                className="w-full input input-bordered"
+                placeholder="Enter restaurant type"
+                className="input input-bordered input-primary rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400"
                 name="type"
                 onChange={handleChange}
                 value={restaurants.type}
               />
             </div>
 
-            <div>
-              <label className="label">
-                <span className="text-base label-text">Image URL</span>
+            {/* Image URL */}
+            <div className="form-control">
+              <label className="label font-medium text-gray-700">
+                Image URL
               </label>
               <input
                 type="text"
-                className="w-full input input-bordered"
+                className="input input-bordered input-primary rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400"
                 onChange={handleChange}
                 placeholder="Restaurant Image URL"
                 name="imageUrl"
                 value={restaurants.imageUrl}
               />
               {restaurants.imageUrl && (
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex justify-center mt-3">
                   <img
-                    className="h-32"
+                    className="h-40 w-auto rounded-lg shadow-md border border-gray-200"
                     src={restaurants.imageUrl}
                     alt="Restaurant Preview"
                   />
@@ -111,19 +114,20 @@ const Add = () => {
               )}
             </div>
 
-            <div className="flex justify-center items-center my-6 space-x-4">
+            {/* Buttons */}
+            <div className="flex justify-center items-center mt-6 gap-4">
               <button
                 type="submit"
-                className="btn bg-green-500 text-white px-6"
+                className="btn btn-primary w-32 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200 text-white"
               >
-                Add
+                ✅ Add
               </button>
               <button
                 type="button"
-                className="btn bg-red-500 text-white px-6"
+                className="btn btn-error btn-outline w-32 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200"
                 onClick={() => navigate("/")}
               >
-                Cancel
+                ❌ Cancel
               </button>
             </div>
           </form>

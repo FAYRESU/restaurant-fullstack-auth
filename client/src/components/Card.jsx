@@ -2,9 +2,9 @@ import React from "react";
 import restaurantService from "../service/restaurant.sevice";
 import { useAuthContext } from "../context/AuthContext";
 
-const Card = (props) => {
+const Card = ({ id, title, type, imageUrl }) => {
   const { user } = useAuthContext();
-  console.log("Card User", user.authorities);
+
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm(
       "Are you sure you want to delete this restaurant?"
@@ -22,38 +22,39 @@ const Card = (props) => {
   };
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl glass hover:scale-105 transition-transform duration-300">
-      <figure>
+    <div className="card w-80 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-300 border border-gray-200">
+      <figure className="relative">
         <img
-          src={props.imageUrl}
-          alt="Restaurant"
-          className="w-full h-60 object-cover rounded-t-lg"
+          src={imageUrl}
+          alt={title}
+          className="w-full h-56 object-cover"
         />
+        <div className="absolute top-3 left-3 badge badge-primary text-white shadow-md">
+          NEW
+        </div>
       </figure>
+
       <div className="card-body">
-        <h2 className="card-title text-lg font-semibold text-primary">
-          {props.title}
-          <div className="badge badge-accent text-white">NEW</div>
+        <h2 className="card-title text-xl font-semibold text-gray-800">
+          {title}
         </h2>
-        <p className="text-sm text-gray-500">{props.type}</p>
+        <p className="text-sm text-gray-500 mb-3">{type}</p>
 
-        {user && user?.authorities.includes("ROLES_ADMIN") && (
-          <div className="card-actions justify-end mt-4">
-            <button
-              onClick={() => handleDelete(props.id)}
-              className="btn btn-error btn-sm"
+        {user && (user?.authorities.includes("ROLES_ADMIN") ||
+                  user?.authorities.includes("ROLES_MODERATOR")) && (
+          <div className="card-actions justify-end gap-2">
+            {user?.authorities.includes("ROLES_ADMIN") && (
+              <button
+                onClick={() => handleDelete(id)}
+                className="btn btn-error btn-sm shadow-md hover:shadow-lg"
+              >
+                Delete
+              </button>
+            )}
+            <a
+              href={`/update/${id}`}
+              className="btn btn-warning btn-sm shadow-md hover:shadow-lg"
             >
-              Delete
-            </button>
-            <a href={`/update/${props.id}`} className="btn btn-warning btn-sm">
-              Edit
-            </a>
-          </div>
-        )}
-
-        {user && user?.authorities.includes("ROLES_MODERATOR") && (
-          <div className="card-actions justify-end mt-4">
-            <a href={`/update/${props.id}`} className="btn btn-warning btn-sm">
               Edit
             </a>
           </div>
