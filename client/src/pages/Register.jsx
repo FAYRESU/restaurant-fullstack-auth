@@ -105,6 +105,7 @@ const Register = () => {
             <button
               type="submit"
               className="btn btn-primary w-3/4 text-white rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200"
+              onClick={handleSubmit}
             >
               สมัครสมาชิก
             </button>
