@@ -84,7 +84,7 @@ const NavBar = () => {
                 Register
               </a>
               <a
-                href="/login"
+                href="/signin"
                 className="btn btn-outline btn-success rounded-xl shadow-sm hover:shadow-md hover:scale-105 transition-transform"
               >
                 Login
